@@ -51,7 +51,7 @@ public class WorkHandlerRunner<T> {
                 .convertDurationsTo(TimeUnit.MICROSECONDS)
                 .formattedFor(Locale.US)
                 .build();
-        consoleReporter.start(100, TimeUnit.HOURS);
+        consoleReporter.start(100, TimeUnit.HOURS); // Pick an arbitrarily long period of time. Will print out the report when I'm done
 
         EventTimerManager<T> eventTimerManager = new EventTimerManager<>();
 

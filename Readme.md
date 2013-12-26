@@ -1,6 +1,6 @@
 # Overview
 This repository is meant as a playground for working with a Disruptor Ring Buffer vs a Blocking (aka Bounded) Queue.
-The hope is to better understand latencies, resource utilization, configuration of each approach as well as get an easy
+The hope is to better understand of latencies, resource utilization, configuration of each approach as well as get an easy
 first glimpse of how your business logic will run with either approach.
 
 # Code Layout
@@ -17,16 +17,19 @@ balanced between all consumers.
 and a print which logs the event.
 
 # TODO
-1. Have tests to verify correctness - all workers get only one message, all messages seen.
+1. Have tests to verify correctness - all workers get only one message, all messages seen, etc.
+2. See if I can measure the dequeue time for a ring buffer. Currently, don't see how.
+3. How do I specify the size of the ring buffer in a work handler.
 
 # Performance
 The following is the output of running on Windows 7, i7 CPU. A total of 8 CPUs.
 
-## No Op Producer
+## No Op Producer (50M messages)
 
 ### Single Thread
 
-50M messages
+#### Queue
+<pre>
 12/26/13 3:58:10 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -97,6 +100,10 @@ queue.enqueue
 
 
 Queue: 58,982ms
+</pre>
+
+#### Ring
+<pre>
 12/26/13 3:58:45 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -151,9 +158,12 @@ ring.enqueue
 
 
 Ring:  34,995ms
+</pre>
 
 ### Multi Thread (8 Threads, 1 per Core)
-50M messages
+
+#### Queue
+<pre>
 12/26/13 4:02:18 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -224,6 +234,10 @@ queue.enqueue
 
 
 Queue: 213,198ms
+</pre>
+
+#### Ring
+<pre>
 12/26/13 4:03:39 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -278,12 +292,11 @@ ring.enqueue
 
 
 Ring:  80,280ms
-
-## Print Producer
+</pre>
+## Print Producer (10M messages)
 
 ### Single Thread
-
-10M messages
+<pre>
 12/26/13 4:04:07 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -354,6 +367,10 @@ queue.enqueue
 
 
 Queue: 28,399ms
+</pre>
+
+#### Ring
+<pre>
 12/26/13 4:04:25 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -408,9 +425,12 @@ ring.enqueue
 
 
 Ring:  17,917ms
+</pre>
 
 ### Multi Thread (8 Threads, 1 per Core)
-10M messages
+
+#### Queue
+<pre>
 12/26/13 4:04:49 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -481,6 +501,10 @@ queue.enqueue
 
 
 Queue: 24,125ms
+</pre>
+
+#### Ring
+<pre>
 12/26/13 4:05:08 PM ============================================================
 
 -- Timers ----------------------------------------------------------------------
@@ -535,3 +559,4 @@ ring.enqueue
 
 
 Ring:  18,494ms
+</pre>
